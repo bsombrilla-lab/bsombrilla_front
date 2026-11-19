@@ -1,0 +1,7 @@
+﻿# Dependencias y archivos temporales
+node_modules/
+.env
+.env.*
+!.env.example
+Thumbs.db
+.DS_Store

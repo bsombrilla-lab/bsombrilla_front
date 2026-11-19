@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#C4A1CC" />
+
+    <title>Mapa de servicios · Bajo la sombrilla</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Nunito:wght@700;800&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+  </head>
+
+  <body class="page-map">
+    <span id="logo-desc" hidden>Logotipo de una sombrilla que representa la articulación entre el enfoque de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en forma de arco, se encuentran los principios del enfoque: centrado en la voz de sujetos históricamente marginados, reconocimiento de desigualdades estructurales, compromiso contextual, pensamiento crítico y situado, perspectiva decolonial, justicia, derechos humanos y saberes locales. En el mango o estructura central se representa el Modelo de Desempeño Ocupacional Realizante, con elementos relacionados con el contexto como determinante del desempeño, las experiencias significativas y los procesos ocupacionales. En la parte inferior, el diseño incorpora los propósitos de organización, integración, productividad y realización. La sombrilla simboliza la integración de estas perspectivas como fundamento para comprender el desempeño ocupacional desde una mirada crítica, contextual y centrada en las personas.</span>
+    <a class="skip" href="#main">Saltar al contenido</a>
+
+    <header>
+      <div class="wrap nav">
+        <a
+          class="logo"
+          href="index.html"
+          aria-label="Bajo la sombrilla, inicio" aria-describedby="logo-desc"
+        >
+          <img
+            class="logo-img"
+            src="images/logo_3_transparente.png"
+            alt="Logotipo de una sombrilla que representa la articulación entre el enfoque de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en forma de arco, se encuentran los principios del enfoque: centrado en la voz de sujetos históricamente marginados, reconocimiento de desigualdades estructurales, compromiso contextual, pensamiento crítico y situado, perspectiva decolonial, justicia, derechos humanos y saberes locales. En el mango o estructura central se representa el Modelo de Desempeño Ocupacional Realizante, con elementos relacionados con el contexto como determinante del desempeño, las experiencias significativas y los procesos ocupacionales. En la parte inferior, el diseño incorpora los propósitos de organización, integración, productividad y realización. La sombrilla simboliza la integración de estas perspectivas como fundamento para comprender el desempeño ocupacional desde una mirada crítica, contextual y centrada en las personas."
+            title="Logotipo de una sombrilla que representa la articulación entre el enfoque de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en forma de arco, se encuentran los principios del enfoque: centrado en la voz de sujetos históricamente marginados, reconocimiento de desigualdades estructurales, compromiso contextual, pensamiento crítico y situado, perspectiva decolonial, justicia, derechos humanos y saberes locales. En el mango o estructura central se representa el Modelo de Desempeño Ocupacional Realizante, con elementos relacionados con el contexto como determinante del desempeño, las experiencias significativas y los procesos ocupacionales. En la parte inferior, el diseño incorpora los propósitos de organización, integración, productividad y realización. La sombrilla simboliza la integración de estas perspectivas como fundamento para comprender el desempeño ocupacional desde una mirada crítica, contextual y centrada en las personas."
+            width="46"
+            height="39"
+          />
+          BAJO LA SOMBRILLA
+        </a>
+
+        <nav class="menu" aria-label="Principal">
+          <a href="index.html">Inicio</a>
+          <a href="acompanamiento.html">Acompañamiento</a>
+          <a href="mapa.html" aria-current="page">Mapa de servicios</a>
+          <a href="index.html#voces">Voces</a>
+        </nav>
+
+        <button
+          class="icon-btn burger"
+          id="burger"
+          aria-expanded="false"
+          aria-controls="mm"
+          aria-label="Abrir menú"
+        >
+          ☰ Menú
+        </button>
+      </div>
+
+      <nav id="mm" aria-label="Menú móvil">
+        <a href="/">Inicio</a>
+        <a href="acompanamiento.html">Acompañamiento</a>
+        <a href="mapa.html">Mapa de servicios</a>
+        <a href="index.html#voces">Voces</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="module-hero">
+        <div class="wrap module-hero-grid">
+          <p class="eyebrow">MAPA DE SERVICIOS</p>
+          <h1>Encuentra apoyo cerca de ti</h1>
+          <img
+            class="module-hero-art"
+            src="images/mapa-servicios.webp"
+            alt="Ilustración de una mujer de cabello azul, arete dorado y vestido morado, rodeada de hojas turquesas dentro de un círculo morado"
+            width="1263"
+            height="1246"
+          />
+          <p class="intro">
+            Explora fundaciones, albergues, centros de salud, oficinas de empleo
+            y comisarías de familia. Puedes filtrar por categoría y ciudad.
+          </p>
+        </div>
+      </section>
+
+      <section class="wrap map-section">
+        <div class="map-filters card">
+          <div>
+            <label for="filtroCategoria">Categoría</label>
+            <select id="filtroCategoria">
+              <option value="">Todas las categorías</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="filtroCiudad">Ciudad</label>
+            <select id="filtroCiudad">
+              <option value="">Todas las ciudades</option>
+            </select>
+          </div>
+
+          <div class="map-actions">
+            <button class="btn" type="button" id="verTodos">VER TODOS</button>
+            <button class="btn alt" type="button" id="miUbicacion">
+              📍 MI UBICACIÓN
+            </button>
+          </div>
+        </div>
+
+        <p class="result-count" id="contador" role="status">
+          Cargando servicios...
+        </p>
+
+        <div class="map-layout">
+          <div
+            id="mapa"
+            class="map-canvas"
+            aria-label="Mapa interactivo de servicios"
+          ></div>
+
+          <aside class="map-results" aria-label="Lista de servicios">
+            <h2>Servicios encontrados</h2>
+            <div id="resultados" aria-live="polite"></div>
+          </aside>
+        </div>
+
+        <div
+          class="map-legend"
+          id="leyenda"
+          aria-label="Convenciones del mapa"
+        ></div>
+
+        <p class="notice">
+          Este mapa es informativo. Si necesitas confirmar horarios o
+          requisitos, llama directamente al servicio antes de desplazarte.
+        </p>
+      </section>
+    </main>
+
+        <footer>
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-head">
+            <img
+              class="footer-logo"
+              src="images/logo_3_transparente.png"
+              alt="Logotipo de una sombrilla que representa la articulación entre el enfoque de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en forma de arco, se encuentran los principios del enfoque: centrado en la voz de sujetos históricamente marginados, reconocimiento de desigualdades estructurales, compromiso contextual, pensamiento crítico y situado, perspectiva decolonial, justicia, derechos humanos y saberes locales. En el mango o estructura central se representa el Modelo de Desempeño Ocupacional Realizante, con elementos relacionados con el contexto como determinante del desempeño, las experiencias significativas y los procesos ocupacionales. En la parte inferior, el diseño incorpora los propósitos de organización, integración, productividad y realización. La sombrilla simboliza la integración de estas perspectivas como fundamento para comprender el desempeño ocupacional desde una mirada crítica, contextual y centrada en las personas."
+              title="Logotipo de una sombrilla que representa la articulación entre el enfoque de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en forma de arco, se encuentran los principios del enfoque: centrado en la voz de sujetos históricamente marginados, reconocimiento de desigualdades estructurales, compromiso contextual, pensamiento crítico y situado, perspectiva decolonial, justicia, derechos humanos y saberes locales. En el mango o estructura central se representa el Modelo de Desempeño Ocupacional Realizante, con elementos relacionados con el contexto como determinante del desempeño, las experiencias significativas y los procesos ocupacionales. En la parte inferior, el diseño incorpora los propósitos de organización, integración, productividad y realización. La sombrilla simboliza la integración de estas perspectivas como fundamento para comprender el desempeño ocupacional desde una mirada crítica, contextual y centrada en las personas."
+              width="46"
+              height="39"
+            />
+            <h2>BAJO LA SOMBRILLA</h2>
+          </div>
+          <p class="footer-tagline">
+            Un espacio para mujeres que construyen nuevos caminos después de las
+            rejas.
+          </p>
+          <p class="footer-project">
+            Proyecto académico de Terapia Ocupacional
+          </p>
+          <p class="footer-note">Información actualizada periódicamente.</p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Pie de página">
+          <h3>EXPLORA</h3>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="acompanamiento.html">Acompañamiento</a></li>
+            <li><a href="mapa.html">Mapa de servicios</a></li>
+            <li><a href="index.html#voces">Voces</a></li>
+            <li><a href="admin.html">Administración</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-credits">
+          <div class="credits-head">
+            <img
+              class="umb-logo"
+              src="images/logo_umb.png"
+              alt="Universidad Manuela Beltrán"
+              width="44"
+              height="64"
+            />
+            <h3>CRÉDITOS DE DESARROLLO</h3>
+          </div>
+          <p>Diseño, desarrollo e implementación de la plataforma</p>
+          <p class="credito-uni">Universidad Manuela Beltrán</p>
+          <p class="credito-proyecto">
+            PROYECTO ACADÉMICO · INGENIERÍA DE SOFTWARE
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="mapa.js"></script>
+    <script src="accesibilidad.js"></script>
+  </body>
+</html>
