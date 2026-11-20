@@ -27,12 +27,18 @@ const state = {
    ========================================================================== */
 
 const esc = (s) =>
-  String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+  String(s == null ? "" : s).replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
   );
 
 const fmtFecha = (texto) => {
-  const [anio, mes, dia] = String(texto || "").split("-").map(Number);
+  const [anio, mes, dia] = String(texto || "")
+    .split("-")
+    .map(Number);
   if (!anio || !mes || !dia) return String(texto || "");
   return new Date(Date.UTC(anio, mes - 1, dia)).toLocaleDateString("es-CO", {
     day: "numeric",
@@ -87,7 +93,10 @@ const cargarLineas = async () => {
   state.lineas.forEach((linea) => {
     const numero = String(linea.numero || "").replace(/\s+/g, "");
 
-    const card = H("article", { className: "card line-card" }, `
+    const card = H(
+      "article",
+      { className: "card line-card" },
+      `
       <div class="ico" aria-hidden="true">📞</div>
       <h3></h3>
       <p class="etq"></p>
@@ -96,7 +105,8 @@ const cargarLineas = async () => {
       <div class="push">
         <a class="tel linea-tel" href="tel:${esc(numero)}"></a>
       </div>
-    `);
+    `,
+    );
 
     card.querySelector("h3").textContent = linea.nombre;
     card.querySelector(".etq").textContent = linea.categoria || "Atención";
@@ -208,7 +218,10 @@ const cargarProfesionales = async () => {
   }
 
   lista.forEach((profesional) => {
-    const card = H("article", { className: "card pro-card" }, `
+    const card = H(
+      "article",
+      { className: "card pro-card" },
+      `
       <div class="ico" aria-hidden="true">🧑‍⚕️</div>
       <h3></h3>
       <p class="etq"></p>
@@ -217,12 +230,14 @@ const cargarProfesionales = async () => {
         <button class="btn sm" type="button" data-agendar>AGENDAR CITA</button>
         <button class="btn sm alt" type="button" data-chat>CONVERSAR</button>
       </div>
-    `);
+    `,
+    );
 
     card.querySelector("h3").textContent = profesional.nombre;
     card.querySelector(".etq").textContent = profesional.especialidad;
     card.querySelector(".pro-desc").textContent = profesional.descripcion || "";
-    card.querySelector("[data-agendar]").onclick = () => abrirAgenda(profesional);
+    card.querySelector("[data-agendar]").onclick = () =>
+      abrirAgenda(profesional);
     card.querySelector("[data-chat]").onclick = () => {
       cambiarTab("chat");
       abrirConversacion({
@@ -273,15 +288,21 @@ const cargarCupos = async () => {
       const [anio, mes, dia] = cupo.fecha.split("-").map(Number);
       const fecha = new Date(Date.UTC(anio, mes - 1, dia));
 
-      const boton = H("button", { className: "date-chip", type: "button" }, `
+      const boton = H(
+        "button",
+        { className: "date-chip", type: "button" },
+        `
         <span>${esc(cupo.dia.slice(0, 3))}</span>
         <strong>${dia}</strong>
         <small>${fecha.toLocaleDateString("es-CO", { month: "short", timeZone: "UTC" })}</small>
-      `);
+      `,
+      );
 
       boton.setAttribute("aria-pressed", "false");
       boton.onclick = () => {
-        $$(".date-chip", fechas).forEach((b) => b.setAttribute("aria-pressed", "false"));
+        $$(".date-chip", fechas).forEach((b) =>
+          b.setAttribute("aria-pressed", "false"),
+        );
         boton.setAttribute("aria-pressed", "true");
         state.agenda.fecha = cupo.fecha;
         state.agenda.hora = null;
@@ -292,7 +313,8 @@ const cargarCupos = async () => {
     });
   } catch (e) {
     sinFechas.hidden = false;
-    sinFechas.textContent = e.message || "No se pudo consultar la disponibilidad.";
+    sinFechas.textContent =
+      e.message || "No se pudo consultar la disponibilidad.";
   }
 };
 
@@ -314,7 +336,9 @@ const pintarHoras = (lista) => {
     const boton = H("button", { className: "time-chip", type: "button" }, hora);
     boton.setAttribute("aria-pressed", "false");
     boton.onclick = () => {
-      $$(".time-chip", horas).forEach((b) => b.setAttribute("aria-pressed", "false"));
+      $$(".time-chip", horas).forEach((b) =>
+        b.setAttribute("aria-pressed", "false"),
+      );
       boton.setAttribute("aria-pressed", "true");
       state.agenda.hora = hora;
       $("#btnAgendar").disabled = false;
@@ -329,7 +353,8 @@ const abrirAgenda = (profesional) => {
 
   $("#agendaProfesional").textContent = profesional.nombre;
   $("#agendaEspecialidad").textContent =
-    profesional.especialidad + (profesional.descripcion ? " · " + profesional.descripcion : "");
+    profesional.especialidad +
+    (profesional.descripcion ? " · " + profesional.descripcion : "");
   $("#agenda").hidden = false;
   $("#motivo").value = "";
   $("#errCita").textContent = "";
@@ -367,7 +392,9 @@ $("#formCita").onsubmit = async (evento) => {
       },
     });
 
-    aviso("Cita solicitada. Queda pendiente de confirmación por la profesional.");
+    aviso(
+      "Cita solicitada. Queda pendiente de confirmación por la profesional.",
+    );
     state.agenda.fecha = null;
     state.agenda.hora = null;
     $("#agenda").hidden = true;
@@ -387,12 +414,17 @@ const cargarCitas = async () => {
   lista.innerHTML = "";
 
   if (!citas.length) {
-    lista.innerHTML = vacio("Todavía no tienes citas. Elige una profesional para comenzar.");
+    lista.innerHTML = vacio(
+      "Todavía no tienes citas. Elige una profesional para comenzar.",
+    );
     return;
   }
 
   citas.forEach((cita) => {
-    const card = H("article", { className: "card cita-card" }, `
+    const card = H(
+      "article",
+      { className: "card cita-card" },
+      `
       <div class="cab">
         <h3></h3>
         <span class="etq ${esc(cita.estado)}"></span>
@@ -403,13 +435,15 @@ const cargarCitas = async () => {
       <p><strong>Modalidad:</strong> <span class="cita-mod"></span></p>
       <p class="cita-motivo"></p>
       <div class="acciones"></div>
-    `);
+    `,
+    );
 
     card.querySelector("h3").textContent = fmtFechaHora(cita.fecha_hora);
     const etiqueta = card.querySelector(".etq");
     etiqueta.textContent = estadoTexto[cita.estado] || cita.estado;
     etiqueta.classList.add(cita.estado);
-    card.querySelector(".cita-fecha").textContent = "Duración: " + cita.duracion_min + " minutos";
+    card.querySelector(".cita-fecha").textContent =
+      "Duración: " + cita.duracion_min + " minutos";
     card.querySelector(".cita-pro").textContent = cita.profesional;
     card.querySelector(".cita-esp").textContent = cita.especialidad || "";
     card.querySelector(".cita-mod").textContent =
@@ -421,7 +455,11 @@ const cargarCitas = async () => {
     const acciones = card.querySelector(".acciones");
 
     if (cita.estado === "pendiente" || cita.estado === "confirmada") {
-      const boton = H("button", { className: "btn sm peligro", type: "button" }, "CANCELAR CITA");
+      const boton = H(
+        "button",
+        { className: "btn sm peligro", type: "button" },
+        "CANCELAR CITA",
+      );
       boton.onclick = async () => {
         if (!confirm("¿Seguro que quieres cancelar esta cita?")) return;
         try {
@@ -439,7 +477,11 @@ const cargarCitas = async () => {
 
       if (cita.modalidad === "virtual") {
         acciones.appendChild(
-          H("span", { className: "hint" }, "El enlace de conexión se comparte por mensajería."),
+          H(
+            "span",
+            { className: "hint" },
+            "El enlace de conexión se comparte por mensajería.",
+          ),
         );
       }
     }
@@ -483,8 +525,7 @@ const crearMensajesPrueba = () => {
     {
       id: "prueba-2",
       remitente: "usuaria",
-      texto:
-        "Hola, hoy me siento un poco ansiosa y quería hablar con alguien.",
+      texto: "Hola, hoy me siento un poco ansiosa y quería hablar con alguien.",
       creado_en: hace(90),
     },
     {
@@ -545,7 +586,9 @@ const crearMensajesPrueba = () => {
 
 const leerChatPrueba = () => {
   try {
-    const guardados = JSON.parse(localStorage.getItem(CHAT_PRUEBA_CLAVE) || "null");
+    const guardados = JSON.parse(
+      localStorage.getItem(CHAT_PRUEBA_CLAVE) || "null",
+    );
 
     if (Array.isArray(guardados) && guardados.length) return guardados;
   } catch (e) {
@@ -693,7 +736,9 @@ const cargarConversaciones = async () => {
       ? "Guía de apoyo"
       : conversacion.profesional;
     boton.querySelector("small").textContent =
-      conversacion.ultimo || conversacion.especialidad || "Iniciar conversación";
+      conversacion.ultimo ||
+      conversacion.especialidad ||
+      "Iniciar conversación";
 
     const badge = boton.querySelector(".conv-badge");
     if (badge && Number(conversacion.sin_leer) > 0) {
@@ -701,7 +746,10 @@ const cargarConversaciones = async () => {
       badge.textContent = conversacion.sin_leer;
     }
 
-    if (state.chat && state.chat.profesional_id === conversacion.profesional_id) {
+    if (
+      state.chat &&
+      state.chat.profesional_id === conversacion.profesional_id
+    ) {
       boton.classList.add("active");
     }
 
@@ -748,7 +796,8 @@ const pintarMensajes = (mensajes, silencioso) => {
   } else {
     mensajes.forEach((mensaje) => {
       const burbuja = H("div", {
-        className: "bubble " + (mensaje.remitente === "usuaria" ? "mio" : "suyo"),
+        className:
+          "bubble " + (mensaje.remitente === "usuaria" ? "mio" : "suyo"),
       });
       burbuja.appendChild(H("p", {}, esc(mensaje.texto)));
       burbuja.appendChild(
@@ -930,19 +979,33 @@ const construirSelectorAnimo = () => {
   contenedor.innerHTML = "";
 
   for (let i = 1; i <= 10; i += 1) {
-    const boton = H("button", { className: "mood-btn", type: "button" }, `
+    const boton = H(
+      "button",
+      { className: "mood-btn", type: "button" },
+      `
       <span aria-hidden="true">${EMOJIS[i - 1]}</span>
       <strong>${i}</strong>
-    `);
+    `,
+    );
     boton.dataset.animo = i;
     boton.setAttribute("aria-pressed", "false");
     boton.setAttribute("aria-label", `Estado de ánimo ${i} de 10`);
     boton.onclick = () => {
-      $$(".mood-btn", contenedor).forEach((b) => b.setAttribute("aria-pressed", "false"));
+      $$(".mood-btn", contenedor).forEach((b) =>
+        b.setAttribute("aria-pressed", "false"),
+      );
       boton.setAttribute("aria-pressed", "true");
       state.animo = i;
       const texto =
-        i <= 2 ? "Muy bajo" : i <= 4 ? "Bajo" : i === 5 ? "Neutral" : i <= 8 ? "Bien" : "Muy bien";
+        i <= 2
+          ? "Muy bajo"
+          : i <= 4
+            ? "Bajo"
+            : i === 5
+              ? "Neutral"
+              : i <= 8
+                ? "Bien"
+                : "Muy bien";
       $("#moodOutput").textContent = `${EMOJIS[i - 1]} ${i}/10 · ${texto}`;
     };
     contenedor.appendChild(boton);
@@ -988,7 +1051,8 @@ const cargarDiario = async () => {
   const conDatos = datos.serie.filter((s) => Number(s.promedio) > 0);
   if (conDatos.length) {
     const promedio =
-      conDatos.reduce((total, s) => total + Number(s.promedio), 0) / conDatos.length;
+      conDatos.reduce((total, s) => total + Number(s.promedio), 0) /
+      conDatos.length;
     $("#promedioAnimo").textContent = promedio.toFixed(1) + " / 10";
   } else {
     $("#promedioAnimo").textContent = "Sin datos";
@@ -997,7 +1061,9 @@ const cargarDiario = async () => {
 
 const fechaHoy = () => {
   const ahora = new Date();
-  return new Date(ahora.getTime() - 5 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  return new Date(ahora.getTime() - 5 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
 };
 
 const seleccionarAnimo = (animo) => {
@@ -1025,22 +1091,29 @@ const pintarEntradas = (entradas) => {
   lista.innerHTML = "";
 
   if (!entradas.length) {
-    lista.innerHTML = vacio("Aún no hay registros. Guarda cómo te sientes hoy.");
+    lista.innerHTML = vacio(
+      "Aún no hay registros. Guarda cómo te sientes hoy.",
+    );
     return;
   }
 
   entradas.slice(0, 14).forEach((entrada) => {
-    const card = H("article", { className: "card diario-item" }, `
+    const card = H(
+      "article",
+      { className: "card diario-item" },
+      `
       <div class="cab">
         <h3></h3>
         <span class="etq"></span>
       </div>
       <p class="emociones"></p>
       <p class="nota"></p>
-    `);
+    `,
+    );
 
     card.querySelector("h3").textContent = fmtFecha(entrada.fecha);
-    card.querySelector(".etq").textContent = `${EMOJIS[Number(entrada.animo) - 1]} ${entrada.animo}/10`;
+    card.querySelector(".etq").textContent =
+      `${EMOJIS[Number(entrada.animo) - 1]} ${entrada.animo}/10`;
     card.querySelector(".emociones").textContent = entrada.emociones
       ? "Emociones: " + entrada.emociones
       : "";
@@ -1132,11 +1205,17 @@ const dibujarGrafico = () => {
   }
 
   const x = (i) =>
-    margen.izquierda + (serie.length === 1 ? ancho / 2 : (i / (serie.length - 1)) * ancho);
+    margen.izquierda +
+    (serie.length === 1 ? ancho / 2 : (i / (serie.length - 1)) * ancho);
   const y = (valor) => margen.arriba + alto - ((Number(valor) - 1) / 9) * alto;
 
   // Área
-  const degradado = ctx.createLinearGradient(0, margen.arriba, 0, margen.arriba + alto);
+  const degradado = ctx.createLinearGradient(
+    0,
+    margen.arriba,
+    0,
+    margen.arriba + alto,
+  );
   degradado.addColorStop(0, "rgba(33, 180, 175, 0.35)");
   degradado.addColorStop(1, "rgba(33, 180, 175, 0.02)");
 
@@ -1174,14 +1253,21 @@ const dibujarGrafico = () => {
   // Fechas en el eje horizontal
   ctx.fillStyle = "#2b1833";
   ctx.font = "11px Atkinson Hyperlegible, Verdana, sans-serif";
-  const indices = new Set([0, Math.floor((serie.length - 1) / 2), serie.length - 1]);
+  const indices = new Set([
+    0,
+    Math.floor((serie.length - 1) / 2),
+    serie.length - 1,
+  ]);
 
   indices.forEach((i) => {
     const [anio, mes, dia] = serie[i].fecha.split("-");
     const etiqueta = `${dia}/${mes}`;
     const anchoTexto = ctx.measureText(etiqueta).width;
     let px = x(i) - anchoTexto / 2;
-    px = Math.max(margen.izquierda, Math.min(px, anchoCss - margen.derecha - anchoTexto));
+    px = Math.max(
+      margen.izquierda,
+      Math.min(px, anchoCss - margen.derecha - anchoTexto),
+    );
     ctx.fillText(etiqueta, px, altoCss - 18);
   });
 };
@@ -1206,7 +1292,10 @@ const cargarTests = async () => {
   grid.innerHTML = "";
 
   definiciones.forEach((test) => {
-    const card = H("article", { className: "card test-card" }, `
+    const card = H(
+      "article",
+      { className: "card test-card" },
+      `
       <div class="ico" aria-hidden="true">${test.id === "ansiedad" ? "🧠" : "💚"}</div>
       <h3></h3>
       <p class="test-desc"></p>
@@ -1214,11 +1303,13 @@ const cargarTests = async () => {
       <div class="push">
         <button class="btn sm" type="button">COMENZAR TEST</button>
       </div>
-    `);
+    `,
+    );
 
     card.querySelector("h3").textContent = test.titulo;
     card.querySelector(".test-desc").textContent = test.descripcion;
-    card.querySelector(".hint").textContent = `${test.preguntas.length} preguntas · unos 3 minutos`;
+    card.querySelector(".hint").textContent =
+      `${test.preguntas.length} preguntas · unos 3 minutos`;
     card.querySelector("button").onclick = () => iniciarTest(test);
     grid.appendChild(card);
   });
@@ -1300,7 +1391,8 @@ $("#formTest").onsubmit = async (evento) => {
     $("#cuestionario").hidden = true;
     $("#resultadoTitulo").textContent = resultado.titulo;
     $("#resultadoPuntaje").textContent = `Puntaje: ${resultado.puntaje}`;
-    $("#resultadoNivel").textContent = `Nivel: ${resultado.nivel}${resultado.riesgo ? " · Indicador de riesgo" : ""}`;
+    $("#resultadoNivel").textContent =
+      `Nivel: ${resultado.nivel}${resultado.riesgo ? " · Indicador de riesgo" : ""}`;
     $("#resultadoRecomendacion").textContent = resultado.recomendacion;
 
     const caja = $("#resultadoTest");
@@ -1333,14 +1425,18 @@ const pintarHistorial = (historial) => {
   }
 
   historial.forEach((test) => {
-    const card = H("article", { className: "card test-hist" }, `
+    const card = H(
+      "article",
+      { className: "card test-hist" },
+      `
       <div class="cab">
         <h3></h3>
         <span class="etq"></span>
         ${test.riesgo ? '<span class="etq riesgo">RIESGO</span>' : ""}
       </div>
       <p></p>
-    `);
+    `,
+    );
 
     card.querySelector("h3").textContent =
       test.tipo === "ansiedad" ? "Escala de ansiedad" : "Escala de autoestima";

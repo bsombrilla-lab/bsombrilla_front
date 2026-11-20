@@ -241,7 +241,23 @@
   </head>
 
   <body>
-    <span id="logo-desc" hidden>Logotipo de una sombrilla que representa la articulación entre el enfoque de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en forma de arco, se encuentran los principios del enfoque: centrado en la voz de sujetos históricamente marginados, reconocimiento de desigualdades estructurales, compromiso contextual, pensamiento crítico y situado, perspectiva decolonial, justicia, derechos humanos y saberes locales. En el mango o estructura central se representa el Modelo de Desempeño Ocupacional Realizante, con elementos relacionados con el contexto como determinante del desempeño, las experiencias significativas y los procesos ocupacionales. En la parte inferior, el diseño incorpora los propósitos de organización, integración, productividad y realización. La sombrilla simboliza la integración de estas perspectivas como fundamento para comprender el desempeño ocupacional desde una mirada crítica, contextual y centrada en las personas.</span>
+    <span id="logo-desc" hidden
+      >Logotipo de una sombrilla que representa la articulación entre el enfoque
+      de Terapias Ocupacionales desde el Sur y el Modelo de Desempeño
+      Ocupacional Realizante. En la cubierta de la sombrilla, dispuestos en
+      forma de arco, se encuentran los principios del enfoque: centrado en la
+      voz de sujetos históricamente marginados, reconocimiento de desigualdades
+      estructurales, compromiso contextual, pensamiento crítico y situado,
+      perspectiva decolonial, justicia, derechos humanos y saberes locales. En
+      el mango o estructura central se representa el Modelo de Desempeño
+      Ocupacional Realizante, con elementos relacionados con el contexto como
+      determinante del desempeño, las experiencias significativas y los procesos
+      ocupacionales. En la parte inferior, el diseño incorpora los propósitos de
+      organización, integración, productividad y realización. La sombrilla
+      simboliza la integración de estas perspectivas como fundamento para
+      comprender el desempeño ocupacional desde una mirada crítica, contextual y
+      centrada en las personas.</span
+    >
     <a class="skip" href="#main">Saltar al contenido</a>
 
     <!-- ==================== ENCABEZADO ==================== -->
@@ -250,7 +266,8 @@
         <a
           class="logo"
           href="index.html"
-          aria-label="Bajo la sombrilla, inicio" aria-describedby="logo-desc"
+          aria-label="Bajo la sombrilla, inicio"
+          aria-describedby="logo-desc"
         >
           <img
             class="logo-img"
@@ -833,11 +850,7 @@
               <div class="err" id="eServicio" role="alert"></div>
 
               <div class="acciones">
-                <button
-                  class="btn alt"
-                  type="button"
-                  id="ubicarServicio"
-                >
+                <button class="btn alt" type="button" id="ubicarServicio">
                   📍 UBICAR DIRECCIÓN
                 </button>
                 <button class="btn" type="submit" id="btnGuardarServicio">
@@ -908,7 +921,7 @@
     </main>
 
     <!-- ==================== PIE DE PÁGINA ==================== -->
-        <footer>
+    <footer>
       <div class="wrap footer-grid">
         <div class="footer-brand">
           <div class="footer-brand-head">
@@ -975,12 +988,6 @@
       // En local se usa el puerto 3000. En producción se usa el mismo dominio
       // desde el que se sirve el sitio. Si el frontend vive en otro dominio,
       // define window.SOMBRILLA_API_URL antes de este script.
-      const API_URL =
-        window.SOMBRILLA_API_URL ||
-        (window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1"
-          ? "http://localhost:3000"
-          : window.location.origin);
 
       const SIN_CONEXION =
         "No hay conexión con el servidor. Intenta de nuevo en unos minutos.";
@@ -2134,10 +2141,7 @@
               " Ubicación aproximada: " + respuesta.referencia;
           }
 
-          await Promise.all([
-            pintarServiciosMapa(),
-            pintarFiltrosServicios(),
-          ]);
+          await Promise.all([pintarServiciosMapa(), pintarFiltrosServicios()]);
         } catch (e) {
           error.textContent = e.status ? e.message : SIN_CONEXION;
         } finally {
@@ -2281,6 +2285,7 @@
         verAcceso();
       })();
     </script>
+    <script src="config.js"></script>
     <script src="accesibilidad.js"></script>
   </body>
 </html>

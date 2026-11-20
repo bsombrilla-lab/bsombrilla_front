@@ -10,12 +10,6 @@ const H = (tag, attributes = {}, innerHTML = "") =>
 // En local se usa el puerto 3000. En producción se usa el mismo dominio
 // desde el que se sirve el sitio (el servidor también sirve la carpeta front).
 // Si el frontend vive en otro dominio, define window.SOMBRILLA_API_URL.
-const API_URL =
-  window.SOMBRILLA_API_URL ||
-  (window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1"
-    ? "http://localhost:3000"
-    : window.location.origin);
 
 /* ==========================================================================
    2. DATOS DE LA APLICACIÓN
